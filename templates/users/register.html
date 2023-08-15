@@ -1,15 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>register</title>
-</head>
-<body>
-    <h1>Register</h1>
-    <form action="" method="POST">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">submit</button>
-    </form>
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Sign-Up page {% endblock title %}
+{% block content %}
+
+<section class="main_login">
+	<!-- <a href="./index.html" target="_blank" rel="noopener noreferrer">Go Back</a> -->
+	<main class="login">
+		<div class="container">
+			<section class="wrapper">
+				<div class="heading">
+					<h1 class="text text-large">Sign Up</h1>
+					<p class="text text-normal">
+						Already have an account?
+						<span>
+							<a href="{% url 'users:login' %}" class="text text-links">
+								LogIn
+							</a>
+						</span>
+					</p>
+				</div>
+				<form method="post" class="form">{% csrf_token %}
+					<div class="input-control">
+						<input type="username" name="username" id="username" class="input-field" placeholder="Username" />
+					</div>
+					<div class="input-control">
+						<input type="text" name="first_name" id="first_name" class="input-field" placeholder="First name" maxlength="150" />
+					</div>
+					<div class="input-control">
+						<input type="text" name="last_name" id="last_name" class="input-field" placeholder="Last name" maxlength="150" />
+					</div>
+					<div class="input-control">
+						<input type="email" name="email" id="email" class="input-field" placeholder="Email Address" maxlength="254" />
+					</div>
+					<div class="input-control">
+						<input type="password" name="password" id="password" class="input-field" placeholder="Password" />
+					</div>
+                    {% comment %} <div class="input-control">
+                        <input type="file" name="image" id="name" class="input-field" placeholder="Image" />
+                    </div> {% endcomment %}
+					<div class="input-control">
+						<a href="{% url 'home' %}" class="text-center input-submit btn btn-secondary">Back Home</a>
+						<button type="submit" name="submit" class="input-submit login-bg-blue">Sign Up</button>
+					</div>
+				</form>
+				<div class="form">
+					<div class="d-flex flex-column">
+						<a href="{% url 'users:login' %}" type="submit" name="submit" class="input-submit login-bg-red my-2 text-center">
+							Login page
+						</a>
+					</div>
+				</div>
+			</section>
+		</div>
+		</div>
+	</main>
+</section>
+{% endblock content %}

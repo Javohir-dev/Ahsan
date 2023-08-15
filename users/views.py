@@ -1,10 +1,11 @@
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.views import View
 
-from .forms import UserCreateForm
+from .forms import UserCreateForm, UserUpdateForm
 
 
 class RegisterView(View):
@@ -48,3 +49,39 @@ class LoginView(View):
             return redirect('home')
         else:
             return render(request, "users/login.html", {'login_form': login_form})
+        
+
+class ProfileView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, "users/profile.html")
+    
+
+class LogoutView(LoginRequiredMixin, View):
+    def get(self, request):
+        logout(request)
+        messages.info(request, "You have been successfully Logged Out!")
+        return redirect("home")
+    
+
+class ProfileUpdateView(LoginRequiredMixin, View):
+    def get(self, request):
+        user_update_form = UserUpdateForm(instance=request.user)
+        context = {
+            "form": user_update_form,
+        }
+
+        return render(request, 'users/prfile_edit.html', context)
+    def post(self, request):
+        user_update_form = UserUpdateForm(
+            instance=request.user, 
+            data=request.POST,
+            files=request.FILES,
+        )
+
+        if user_update_form.is_valid():
+            user_update_form.save()
+            messages.success(request, "You have been successfully Updated your profile!")
+            
+            return redirect("users:profile")
+        else:
+            return render(request, 'users/prfile_edit.html', {"form": user_update_form})

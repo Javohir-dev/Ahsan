@@ -8,11 +8,13 @@
     <h2>Welcome to <span>AHSAN's web site</span></h2>
     <p>Et voluptate esse accusantium accusamus natus reiciendis quidem voluptates similique aut.</p>
     <div class="d-flex">
-      <a href="#about" class="btn-get-started scrollto">Login</a>
-      <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ"
-        class="glightbox btn-watch-video d-flex align-items-center">
-        <i class="bi bi-play-circle"></i><span>Watch Video</span>
-      </a>
+      {% if user.is_authenticated %}
+        <a href="#" class="cta-btn align-self-start me-2">Students</a>
+        <a href="#" class="my_cta-btn align-self-start">News</a>
+      {%  else %}
+        <a href="{% url 'users:login' %}" class="cta-btn align-self-start me-2">Login</a>
+        <a href="{% url 'users:register' %}" class="my_cta-btn align-self-start">Register</a>
+      {% endif %}
     </div>
   </div>
 </section>
