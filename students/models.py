@@ -3,7 +3,7 @@ from django.db import models
 
 class ActivedManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(status=Studens.Status.Active)
+        return super().get_queryset().filter(status=Students.Status.Active)
     
 
 # class Category(models.Model):
@@ -14,6 +14,13 @@ class ActivedManager(models.Manager):
 
  
 class Subjects(models.Model):
+    name = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.name
+
+ 
+class Months(models.Model):
     name = models.CharField(max_length=150)
 
     def __str__(self):
@@ -30,7 +37,7 @@ class Teachers(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
-class Studens(models.Model):
+class Students(models.Model):
 
     class Status(models.TextChoices):
         Active = "ACT", "Active"
@@ -42,6 +49,8 @@ class Studens(models.Model):
     phone = models.CharField(max_length=50)
     subject = models.ForeignKey(Subjects, on_delete=models.CASCADE)
     teacher = models.ForeignKey(Teachers, on_delete=models.CASCADE)
+    price = models.CharField(max_length=50)
+    month = models.ForeignKey(Months, on_delete=models.CASCADE)
     status = models.CharField(
         max_length=3, choices=Status.choices, default=Status.Disable
     )

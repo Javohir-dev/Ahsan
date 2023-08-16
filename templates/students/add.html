@@ -1,13 +1,29 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Students List
+Add Student Information
 {% endblock title %}
 
 {% block content %}
     <div class="container">
         <div class="" style="margin: 5rem 0px">
-       
+            <h1>Add Student Information</h1>
+            <div class="col-md-6 offset-md-3">
+                <h1>Add Student</h1>
+                <br/>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                
+                    {{ form.as_p }}
+                
+                    <br/>
+                    <button type="submit" class="btn btn-success">Add Record</button>
+                    <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+                
+                </form>
+                
+            </div>
         </div>
     </div>
 {% endblock content %}

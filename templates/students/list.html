@@ -12,9 +12,9 @@ Students List
             <div class="d-flex justify-content-between">
                 <h1>Students...</h1>
 
-                {% comment %} {% if user.is_staff %}
-                    <a href="{% url 'add_record' %}" class="btn btn-success" style="margin: 10px 0">Add Record</a>
-                {% endif %} {% endcomment %}
+                {% if user.is_staff %}
+                    <a href="{% url 'students:add' %}" class="btn btn-success" style="margin: 10px 0">Add Students</a>
+                {% endif %}
 
             </div>
 
@@ -26,13 +26,17 @@ Students List
                             <th scope="col">id</th>
                             <th scope="col">First name</th>
                             <th scope="col">Last name</th>
-                            <th scope="col">Phone</th>
+                            {% if user.is_staff %}
+                                <th scope="col">Phone</th>
+                            {% endif %}
                             <th scope="col">Subject</th>
                             <th scope="col">Teacher</th>
+                            <th scope="col">Pay</th>
+                            <th scope="col">Month</th>
                             <th scope="col">Created At</th>
-                            {% comment %} {% if user.is_staff %}
+                            {% if user.is_staff %}
                                 <th scope="col">Detail Page</th>
-                            {% endif %} {% endcomment %}
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
@@ -41,26 +45,57 @@ Students List
                                 <th scope="row">{{ student.id }}</th>
                                 <td>{{ student.first_name }}</td>
                                 <td>{{ student.last_name }}</td>
-                                <td>{{ student.phone }}</td>
+                                {% if user.is_staff %}
+                                    <td>{{ student.phone }}</td>
+                                {% endif %}
                                 <td>{{ student.subject }}</td>
                                 <td>{{ student.teacher }}</td>
+                                <td>{{ student.price }} so'm</td>
+                                <td>{{ student.month }}</td>
                                 <td>{{ student.created_at }}</td>
-                                {% comment %} {% if user.is_staff %}
+                                {% if user.is_staff %}
                                     <td>
                                         <a
-                                            href="{% url 'customer_record' record.pk %}"
-                                            class="btn btn-warning"
+                                            href="{% url 'students:detail' student.id %}"
+                                            class="btn btn-secondary"
                                             style="padding: 0px 23px">
                                             Detail
                                         </a>
                                     </td>
-                                {% endif %} {% endcomment %}
+                                {% endif %}
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
 
             {% endif %}
+        {% else %}
+        <section class="page_404 mt-5">
+            <div class="my_container">
+              <div class="row">
+                <div class="col-sm-12 d-flex justify-content-center">
+                  <div class="col-sm-10 col-sm-offset-1">
+                    <div class="four_zero_four_bg">
+                      <h1 class="text-center ">404</h1>
+        
+        
+                    </div>
+        
+                    <div class="contant_box_404">
+                      <h3 class="h2">
+                        You must be Logged in!
+                      </h3>
+        
+                      <p>You cannot see tables!</p>
+        
+                      <a href="{% url 'users:login' %}" class="btn btn-primary px-5 py-2">Login</a>
+                      <a href="{% url 'home' %}" class="btn btn-secondary px-5 py-2">Go to Home</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
         {% endif %}
         </div>
     </div>
