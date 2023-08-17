@@ -29,6 +29,18 @@ class StudensListView(ListView):
         return context
 
 
+class NoActiveStudensListView(ListView):
+    template_name = 'students/no-active-list.html'
+    queryset = Students.objects.all()
+    context_object_name = 'all_students'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["students"] = Students.disable.all()
+
+        return context
+
+
 class StudentDetailView(DetailView):
     model = Students
     pk_url_kwarg = 'id'
@@ -46,45 +58,32 @@ class StudentCreateView(OnlySuperUsers, CreateView):
 
 class StudentUpdateView(OnlySuperUsers, UpdateView):
     model = Students
-    pk_url_kwarg = 'id'
+    form_class = StudentUpdateForm
     template_name = "students/update.html"
-    fields = ["first_name", "last_name", "phone", "subject", "teacher", "price", "month", "status"]
-    success_url = reverse_lazy("students:students_list")
-
+    pk_url_kwarg = 'id'
+    context_object_name = 'student'
+    # reverse_lazy = "students:student_list"
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["teacher"] = Teachers.objects.all()
-        context["subject"] = Subjects.objects.all()
-        context["month"] = Months.objects.all()
+        context["teachers"] = Teachers.objects.all()
+        context["subjects"] = Subjects.objects.all()
+        context["months"] = Months.objects.all()
 
         return context
 
+    def get_success_url(self):
+        return reverse_lazy("students:student_detail", kwargs={"id": self.object.id})
+
+
+
 # class StudentUpdateView(OnlySuperUsers, UpdateView):
-#     def get(self, request, id):
-#         student_update_form = StudentUpdateForm(instance=request.student)
-#         teacher = Teachers.objects.all()
-#         subject = Subjects.objects.all()
-#         month = Months.objects.all()
-#         context = {
-#             "form": student_update_form,
-#             "teacher": teacher,
-#             "subject": subject,
-#             "month": month,
-#         }
+#     model = Students
+#     pk_url_kwarg = 'id'
+#     template_name = "students/update.html"
+#     fields = ["first_name", "last_name", "phone", "subject", "teacher", "price", "month", "status"]
+#     success_url = reverse_lazy("students:students_list")
 
-#         return render(request, 'students/update.html', context)
-#     def post(self, request, id):
-#         student_update_form = StudentUpdateForm(
-#             instance=request.student, 
-#             data=request.POST,
-#         )
-
-#         if student_update_form.is_valid():
-#             student_update_form.save()
-            
-#             return redirect("students:detail")
-#         else:
-#             return render(request, 'students/students/update.html', {"form": student_update_form})
 
 def delete_student(request, pk):
     delete_student = Students.objects.get(id=pk)

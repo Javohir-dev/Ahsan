@@ -58,9 +58,13 @@ Detail Student Information
                     </tbody>
                 </table>
                 <div class="my-3">
-                    <a href="{% url 'students:students_list' %}" class="btn btn-secondary" style="width: 150px;">Go Back</a>
+                    {% if student.status == "ACT" %}
+                        <a href="{% url 'students:students_list' %}" class="btn btn-secondary" style="width: 150px;">Go Back</a>
+                    {% else %}
+                        <a href="{% url 'students:no_actives' %}" class="btn btn-secondary" style="width: 150px;">Go Back</a>
+                    {% endif %}
                     <a href="{% url 'students:delete' student.pk %}" class="btn btn-danger"  style="width: 150px;">Delete</a>
-                    <a href="{% url 'students:update' student.id %}" class="btn btn-warning"  style="width: 150px;">Update</a>
+                    <a href="{% url 'students:student_update' student.id %}" class="btn btn-warning"  style="width: 150px;">Update</a>
                 </div>
             {% else %}
                 <section class="page_404 mt-5">
@@ -85,7 +89,6 @@ Detail Student Information
                     </div>
                 </section>
             {% endif %}
-
         </div>
     </div>
 {% endblock content %}

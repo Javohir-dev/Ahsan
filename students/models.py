@@ -6,6 +6,11 @@ class ActivedManager(models.Manager):
         return super().get_queryset().filter(status=Students.Status.Active)
     
 
+class NoActivedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(status=Students.Status.Disable)
+    
+
 # class Category(models.Model):
 #     name = models.CharField(max_length=150)
 
@@ -56,6 +61,7 @@ class Students(models.Model):
     )
     objects = models.Manager()  # defauld manager
     active = ActivedManager()
+    disable = NoActivedManager()
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"

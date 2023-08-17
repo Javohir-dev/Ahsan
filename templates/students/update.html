@@ -5,45 +5,37 @@ Update Student Information
 {% endblock title %}
 
 {% block content %}
-<form action="" method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">submit</button>
-</form>
     <div class="container">
         <div class="" style="margin: 5rem 0px">
             <h1>Update Student Information</h1>
             <div class="form mt-5">
-                <form action="{% url 'students:students_list' %}" method="POST" role="form" class="php-email-form">{% csrf_token %}
+                <form action="" method="post">{% csrf_token %}
                     <div class="row">
-                        <div class="form-group col">
-                            <label for="name" class="form-label">First name</label>
-                            <input type="text" name="first_name" class="form-control" id="name" placeholder="Title" value="{{ students.first_name }}" required>
+                        <div class="form-group col my-3">
+                            <label for="id_first_name">First name:</label>
+                            <input type="text" name="first_name" value="{{ student.first_name }}" class="form-control" maxlength="100" required="" id="id_first_name">
                         </div>
-                        <div class="form-group col">
-                            <label for="name" class="form-label">Last name</label>
-                            <input type="text" name="last_name" class="form-control" id="name" placeholder="Title" value="{{ students.last_name }}" required>
-                        </div>
-                        <div class="form-group col">
-                            <label for="name" class="form-label">Phone</label>
-                            <input type="text" name="phone" class="form-control" id="name" placeholder="Title" value="{{ students.phone }}" required>
+                        <div class="form-group col my-3">
+                            <label for="id_last_name">Last name:</label>
+                            <input type="text" name="last_name" value="{{ student.last_name }}" class="form-control" maxlength="100" required="" id="id_last_name">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col">
-                            <label for="name" class="form-label">Price</label>
-                            <input type="text" name="price" class="form-control" id="name" placeholder="Title" value="{{ students.price }}" required>
+                        <div class="form-group col my-3">
+                            <label for="id_phone">Phone:</label>
+                            <input type="number" name="phone" value="{{ student.phone }}" class="form-control" maxlength="100" required="" id="id_phone">
+                        </div>
+                        <div class="form-group col my-3">
+                            <label for="id_price">Price:</label>
+                            <input type="number" name="price" value="{{ student.price }}" class="form-control" maxlength="100" required="" id="id_price">
                         </div>
                     </div>
-                    {% comment %} <div class="form-group">
-                        <label for="body" class="form-label">Body</label>
-                        <textarea class="form-control" name="body" id="body" rows="5" placeholder="Message" required>{{ students.body }}</textarea>
-                    </div> {% endcomment %}
-                    <div class="row mt-3">
-
-                        <div class="form-group col">
-                            <select name="subject" required="" id="id_category" class="form-select">
-                                {% for option in subject %}
-                                    {% if option == subject %}
+                    <div class="row">
+                        <div class="form-group col my-3">
+                            <label for="id_subject">Subject:</label>
+                            <select name="subject" required="" id="id_subject" class="form-select">
+                                {% for option in subjects %}
+                                    {% if option == student.subject %}
                                         <option value="{{ forloop.counter }}" selected="">{{ option }}</option>
                                     {% else %}
                                         <option value="{{ forloop.counter }}">{{ option }}</option>
@@ -51,10 +43,11 @@ Update Student Information
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="form-group col">
-                            <select name="teacher" required="" id="id_category" class="form-select">
-                                {% for option in teacher %}
-                                    {% if option == teacher %}
+                        <div class="form-group col my-3">
+                            <label for="id_teacher">Teacher:</label>
+                            <select name="teacher" required="" id="id_teacher" class="form-select">
+                                {% for option in teachers %}
+                                    {% if option == student.teacher %}
                                         <option value="{{ forloop.counter }}" selected="">{{ option }}</option>
                                     {% else %}
                                         <option value="{{ forloop.counter }}">{{ option }}</option>
@@ -62,10 +55,11 @@ Update Student Information
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="form-group col">
-                            <select name="month" required="" id="id_category" class="form-select">
-                                {% for option in month %}
-                                    {% if option == month %}
+                        <div class="form-group col my-3">
+                            <label for="id_month">Month:</label>
+                            <select name="month" required="" id="id_month" class="form-select">
+                                {% for option in months %}
+                                    {% if option == student.month %}
                                         <option value="{{ forloop.counter }}" selected="">{{ option }}</option>
                                     {% else %}
                                         <option value="{{ forloop.counter }}">{{ option }}</option>
@@ -73,18 +67,22 @@ Update Student Information
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="form-group col">
-                            <select name="status" required="" id="id_category" class="form-select">
-                                {% if students.status == "ACT" %}
+                        <div class="form-group col my-3">
+                            <label for="id_status">Status:</label>
+                            <select name="status" id="id_status" class="form-select">
+                                {% if student.status == "ACT" %}
                                     <option value="ACT" selected="">Active</option>
+                                    <option value="DIS">Disable</option>
                                 {% else %}
-                                    <option value="DIS" >Disable</option>
+                                    <option value="ACT">Active</option>
+                                    <option value="DIS" selected="">Disable</option>
                                 {% endif %}
                             </select>
                         </div>
                     </div>
-                    <div class="text-center">
+                    <div class="text-center mt-5">
                         <button type="submit" class="btn btn-primary">Save the change</button>
+                        <a href="{% url 'students:student_detail' student.id %}" type="submit" class="btn btn-secondary">Cencel</a>
                     </div>
                 </form>
             </div><!-- End Contact Form -->

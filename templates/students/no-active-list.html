@@ -14,8 +14,7 @@ Students List
 
                 {% if user.is_staff %}
                     <div class="">
-                        <a href="{% url 'students:student_add' %}" class="btn btn-success" style="margin: 10px 0">Add Students</a>
-                        <a href="{% url 'students:no_actives' %}" class="btn btn-danger" style="margin: 10px 0">No Active Students</a>
+                        <a href="{% url 'students:students_list' %}" class="btn btn-success" style="margin: 10px 0">Active Students</a>
                     </div>
                 {% endif %}
 
@@ -71,6 +70,29 @@ Students List
                     </tbody>
                 </table>
 
+            {% else %}
+            <section class="page_404">
+                <div class="my_container">
+                    <div class="row">
+                    <div class="col-sm-12 d-flex justify-content-center">
+                        <div class="col-sm-10 col-sm-offset-1">
+                        <div class="four_zero_four_bg">
+                            <h1 class="text-center ">404</h1>
+            
+            
+                        </div>
+            
+                        <div class="contant_box_404">
+                            <h3 class="h2">
+                                There are no inactive students left here
+                            </h3>
+                            <a href="{% url 'students:students_list' %}" class="btn btn-primary px-5 py-2">You can see active students.</a>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </section>
             {% endif %}
         {% else %}
         <section class="page_404 mt-5">
