@@ -9,11 +9,21 @@ Students List
         <div class="" style="margin: 5rem 0px">
         {% if user.is_authenticated %}
 
-            <div class="d-flex justify-content-between">
-                <h1>Students...</h1>
+            <div class="row py-3 align-items-center">
+                <div class="col-4">
+                    <h1>Students...</h1>
+                </div>
+                <div class="col-5">
+                    <div class="">
+                        <form action="" method="get" class="d-flex">{% csrf_token %}
+                            <input type="text" class="form-control" name="q" id="" placeholder="Search..." value="{{ search_query }}" />
+                            <button class="ms-2 btn btn-primary">Search...</button>
+                        </form>
+                    </div>
+                </div>
 
                 {% if user.is_staff %}
-                    <div class="">
+                    <div class="col-3 d-flex justify-content-between">
                         <a href="{% url 'students:student_add' %}" class="btn btn-success" style="margin: 10px 0">Add Students</a>
                         <a href="{% url 'students:no_actives' %}" class="btn btn-danger" style="margin: 10px 0">No Active Students</a>
                     </div>

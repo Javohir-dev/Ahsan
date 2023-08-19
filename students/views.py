@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse_lazy
@@ -17,17 +18,34 @@ from students.models import Students, Teachers, Subjects, Months
 
 
 
+# class StudensListView(ListView):
+#     template_name = 'students/list.html'
+#     queryset = Students.objects.all()
+#     context_object_name = 'all_students'
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context["students"] = Students.active.all()
+
+#         return context
+
+
 class StudensListView(ListView):
-    template_name = 'students/list.html'
-    queryset = Students.objects.all()
-    context_object_name = 'all_students'
+    def get(self, request):
+        students = Students.objects.all().order_by('id')
+        search_query = request.GET.get('q', '')
+        if search_query:
+            students = students.filter(
+                Q(first_name__icontains=search_query) |  # first_name yoki
+                Q(last_name__icontains=search_query)
+            )
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["students"] = Students.active.all()
+        context = {
+            "students": students,
+            "search_query": search_query,
+        }
 
-        return context
-
+        return render(request, 'students/list.html', context)
 
 class NoActiveStudensListView(ListView):
     template_name = 'students/no-active-list.html'
@@ -74,15 +92,6 @@ class StudentUpdateView(OnlySuperUsers, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("students:student_detail", kwargs={"id": self.object.id})
-
-
-
-# class StudentUpdateView(OnlySuperUsers, UpdateView):
-#     model = Students
-#     pk_url_kwarg = 'id'
-#     template_name = "students/update.html"
-#     fields = ["first_name", "last_name", "phone", "subject", "teacher", "price", "month", "status"]
-#     success_url = reverse_lazy("students:students_list")
 
 
 def delete_student(request, pk):

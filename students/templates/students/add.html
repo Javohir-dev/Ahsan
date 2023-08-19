@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
 Add Student Information
@@ -15,11 +16,11 @@ Add Student Information
                 <form method="POST">
                     {% csrf_token %}
                 
-                    {{ form.as_p }}
+                    {{ form | crispy }}
                 
                     <br/>
                     <button type="submit" class="btn btn-success">Add Record</button>
-                    <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+                    <a href="{% url 'students:students_list' %}" class="btn btn-secondary">Back</a>
                 
                 </form>
                 
