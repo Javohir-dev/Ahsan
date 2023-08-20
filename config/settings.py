@@ -133,7 +133,7 @@ STATIC_URL = "/static/"
 # STATICFILES_DIRS = [str(BASE_DIR.joinpath("static"))]
 # STATIC_ROOT = [str(BASE_DIR.joinpath("staticfiles"))]
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = BASE_DIR / "staticfiles"
+# STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",

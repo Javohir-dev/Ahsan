@@ -3,16 +3,12 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from config.cutom_permission import OnlySuperUsers
 
-from students.forms import (
-    StudentsCreateForm,
-    StudentUpdateForm,
-    # AddStudentForm,
-    # AddStudentsForm
-)
+from students.forms import StudentUpdateForm
 
 from students.models import Students, Teachers, Subjects, Months
 
@@ -30,22 +26,33 @@ from students.models import Students, Teachers, Subjects, Months
 #         return context
 
 
+from django.db.models import Q
+
 class StudensListView(ListView):
     def get(self, request):
         students = Students.objects.all().order_by('id')
-        search_query = request.GET.get('q', '')
+        page_size = request.GET.get('page_size', 10)
+        paginator = Paginator(students, page_size)
+
+        page_num = request.GET.get('page', 1)
+        page_object = paginator.get_page(page_num)
+        search_query = request.GET.get('search', '')
         if search_query:
             students = students.filter(
                 Q(first_name__icontains=search_query) |  # first_name yoki
                 Q(last_name__icontains=search_query)
             )
 
+            paginator = Paginator(students, page_size)  # Paginator ni qayta o'rnatish kerak
+            page_object = paginator.get_page(page_num)
+
         context = {
-            "students": students,
+            "page_obj": page_object,
             "search_query": search_query,
         }
 
         return render(request, 'students/list.html', context)
+
 
 class NoActiveStudensListView(ListView):
     template_name = 'students/no-active-list.html'
