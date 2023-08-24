@@ -3228,3 +3228,27 @@ section {
   color: var(--color-white);
   background: var(--color-primary);
 }
+
+.post_img {
+  width: 100% !important;
+  max-height: 330px !important;
+  overflow: hidden;
+}
+
+.post_img>img {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  object-fit: cover;
+}
+
+.post__image {
+  width: 80px !important;
+  height: 60px !important;
+  overflow: hidden;
+}
+
+.post__image>img {
+  width: 100%;
+  object-fit: cover;
+}
