@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+from users.models import CustomUser
+
 
 class PublishedManager(models.Manager):
     def get_queryset(self):
@@ -43,3 +45,11 @@ class News(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class NewsComment(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name='comments')
+    comment = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+    active = models.BooleanField(default=True)

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from news.models import News, Category
+from news.models import News, Category, NewsComment
 
 
 @admin.register(News)
@@ -14,3 +14,7 @@ class NewsAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CateoriesAdmin(admin.ModelAdmin):
     list_display = ["name", "id"]
+
+@admin.register(NewsComment)
+class NewsCommentadmin(admin.ModelAdmin):
+    list_display = ['user', 'news', 'comment']
